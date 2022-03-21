@@ -6,13 +6,18 @@ import 'reactjs-popup/dist/index.css';
 import { ReactPhotoCollage } from "react-photo-collage";
 import Axios from 'axios';
 import { toPng } from 'html-to-image';
+import useMediaQuery from '@mui/material/useMediaQuery';
+
 
 function Temp2() {
     const ref = useRef(null)
+    const matches = useMediaQuery('(min-width:650px)');
+
 
     const [color, setColor] = useColor("hex", "#121212");
     const [isUpload, setIsUpload] = useState(false);
     const [collage, setCollage] = useState(false);
+    const [isGreyScale, setIsGreyScale] = useState(false);
 
     const [imageSelected1, setImageSelected1] = useState(null);
     const [publicId1, setPublicId1] = useState(null);
@@ -29,6 +34,7 @@ function Temp2() {
     const [isBackImg, setIsBackImg] = useState(null);
     const [background, setBackground] = useState(null);
     const [bg_publicId, setbg_publicId] = useState(null);
+    const [menu, setMenu] = useState(false);
 
     //to download Collage
     const onButtonClick = useCallback(() => {
@@ -50,8 +56,8 @@ function Temp2() {
 
     //collage function
     const setting = {
-        width: "600px",
-        height: ["250px", "170px"],
+        width: matches ? "600px" : "250px",
+        height: matches ? ["250px", "170px"] : ["150px", "100px"],
         layout: [1, 3],
         photos: [
             {
@@ -76,6 +82,7 @@ function Temp2() {
 
     //reset function
     const resetApp = () => {
+        setIsGreyScale(false);
         setIsUpload(false)
         setCollage(false)
         setImageSelected1(null)
@@ -164,20 +171,27 @@ function Temp2() {
     return (
         <div className="App">
             <div className="top">
+
                 <button className="menu-btn" onClick={resetApp}>
                     Reset
                 </button>
 
-                <button className="menu-btn" style={(publicId1 && publicId2 && publicId3 && publicId4) ? {} : { visibility: "hidden" }} onClick={() => {
+                <button className="menu-btn" style={(publicId1 && publicId2 && publicId3 && publicId4) ? {} : { display: "none" }} onClick={() => {
                     setCollage(true);
                 }}>
                     Create Collage
                 </button>
-                <button className="menu-btn" style={(publicId1 && publicId2 && publicId3 && publicId4) ? { visibility: "hidden" } : {}} onClick={uploadImage}>
+                <button className="menu-btn" style={(publicId1 && publicId2 && publicId3 && publicId4) ? { display: "none" } : {}} onClick={uploadImage}>
                     {isUpload ? "Uploading..." : "Upload Image"}
                 </button>
 
-                <button className="menu-btn" style={(publicId1 && publicId2 && publicId3 && publicId4) ? {} : { visibility: "hidden" }} onClick={onButtonClick}>Download Collage</button>
+                <button className={isGreyScale ? "menu-btn-selected" : "menu-btn"} style={(publicId1 && publicId2 && publicId3 && publicId4) ? {} : { display: "none" }} onClick={() => {
+                    if (isGreyScale)
+                        setIsGreyScale(false)
+                    else
+                        setIsGreyScale(true)
+                }}>Add Greyscale</button>
+                <button className="menu-btn" style={(publicId1 && publicId2 && publicId3 && publicId4) ? {} : { display: "none" }} onClick={onButtonClick}>Download Collage</button>
 
                 <div className="collage-back">
                     <label>Set Background</label>
@@ -246,7 +260,7 @@ function Temp2() {
 
                 </div>
 
-                <div className="right" ref={ref}>
+                <div id={isGreyScale ? "black-white" : ""} className="right" ref={ref}>
                     {collage ?
                         <div className="collage" style={isBackImg ? { backgroundImage: `url(https://res.cloudinary.com/saptya/image/upload/v1647524090/${bg_publicId}.jpg)`, backgroundRepeat: "no-repeat" } : { background: color.hex }}>
                             <ReactPhotoCollage {...setting} />

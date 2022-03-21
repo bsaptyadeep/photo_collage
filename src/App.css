@@ -24,7 +24,7 @@
     align-items: flex-start;
     height: fit-content;
   }
-  
+ 
   /* menu button */
   
     .menu-btn{
@@ -38,7 +38,17 @@
       font-size: 12px;
       font-weight: 500;
     }
-  
+    .menu-btn-selected{
+      margin: 8px;
+      padding: 8px;
+      position: relative;
+      color: #464646;
+      background-color: #adecab;
+      border-radius: 3px;
+      border: 0px;
+      font-size: 12px;
+      font-weight: 600;
+    }
     .menu-btn:hover{
       color: #464646;
       background-color: #adecab;
@@ -136,12 +146,72 @@
       margin-left: auto;
       margin-right: auto;
     }
-    
-    
-    /* .download-btn{
-      margin-top: 40px;
-      margin-left: 200px;
-    } */
-  .dFiLgm{
-    border: none;
+
+  #black-white{
+      -webkit-filter: grayscale(1);
   }
+
+
+@media only screen and (max-width: 800px){
+  .App{
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    top: 0;
+  }
+  .top{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .menu-btn{
+    width: 90%;
+  }
+  .workplace{
+    flex-direction: column;
+    width: 100%;
+  }
+  .left{
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    padding: 0%;
+    margin: 0%;
+  }
+
+  .empty-collage{
+    margin: 50px;
+    width: 300px;
+    background-color: #ffffff;
+    height: 300px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .collage{
+    padding: 20px;
+  }
+  .custom-file-upload {
+    width: 95%;
+    font-size: 20px;
+  }
+
+  .collage-back{
+    font-size: 20px;
+  }
+
+  .menu-btn{
+    width: 100%;
+    font-size: 20px;
+  }
+  .menu-btn-selected{
+    width: 100%;
+    font-size: 20px;
+  }
+
+  .back-col{
+    width: 20px;
+    height: 20px;
+  }
+
+}
