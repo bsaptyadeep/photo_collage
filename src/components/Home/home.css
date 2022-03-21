@@ -1,0 +1,30 @@
+*{
+    margin: 0%;
+    padding: 0%;
+}
+
+.main{
+    width: 100%;
+    background-color: black;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    top: 0;
+}
+.button{
+    margin: 25px;
+    background-color: rgb(70, 70, 70);
+    padding: 10px;
+    border-radius: 10px;
+    color: white;
+    text-align: center;
+    cursor: pointer;
+}
+.button img {
+    height: 150px;
+}
