@@ -15,17 +15,17 @@ function Home() {
                 <img src={require('./image/template_2.png')} />
                 <p>Template 2</p>
             </div>
-            <div className="button" onClick={() => navigate('/temp1')}>
+            <div className="button" onClick={() => navigate('/temp3')}>
                 <img src={require('./image/template_3.png')} />
                 <p>Template 3</p>
             </div>
-            <div className="button" onClick={() => navigate('/temp1')}>
+            <div className="button" onClick={() => navigate('/temp4')}>
                 <img src={require('./image/template_4.png')} />
                 <p>Template 4</p>
             </div>
             <div className="button" onClick={() => navigate('/temp5')}>
-                <img src={require('./image/template_4.png')} />
-                <p>Template 5</p>
+                <img src={require('./image/custom_Template.png')} />
+                <p>Custom Template</p>
             </div>
         </div>
     )

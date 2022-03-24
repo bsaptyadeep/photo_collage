@@ -9,7 +9,7 @@ import { toPng } from 'html-to-image';
 import useMediaQuery from '@mui/material/useMediaQuery';
 
 
-function Temp1() {
+function Temp4() {
     const ref = useRef(null)
     const matches = useMediaQuery('(min-width:650px)');
 
@@ -30,9 +30,6 @@ function Temp1() {
 
     const [imageSelected4, setImageSelected4] = useState(null);
     const [publicId4, setPublicId4] = useState(null);
-
-    const [imageSelected5, setImageSelected5] = useState(null);
-    const [publicId5, setPublicId5] = useState(null);
 
     const [isBackImg, setIsBackImg] = useState(null);
     const [background, setBackground] = useState(null);
@@ -60,7 +57,7 @@ function Temp1() {
     const setting = {
         width: matches ? "600px" : "250px",
         height: matches ? ["250px", "170px"] : ["150px", "100px"],
-        layout: [2, 3],
+        layout: [2, 2],
         photos: [
             {
                 source:
@@ -77,10 +74,6 @@ function Temp1() {
             {
                 source:
                     `https://res.cloudinary.com/saptya/image/upload/v1647524090/${publicId4}.jpg`
-            },
-            {
-                source:
-                    `https://res.cloudinary.com/saptya/image/upload/v1647524090/${publicId5}.jpg`
             }
         ],
         showNumOfRemainingPhotos: true
@@ -99,8 +92,6 @@ function Temp1() {
         setPublicId3(null)
         setImageSelected4(null)
         setPublicId4(null)
-        setImageSelected5(null)
-        setPublicId5(null)
         setIsBackImg(null)
         setBackground(null)
         setbg_publicId(null)
@@ -160,18 +151,6 @@ function Temp1() {
                     console.log(publicId4)
                 }
             )
-
-            const formData5 = new FormData();
-            formData5.append("file", imageSelected4);
-            formData5.append("upload_preset", "eet582tc")
-
-            Axios.post("https://api.cloudinary.com/v1_1/saptya/image/upload", formData5).then(
-                (Response) => {
-                    console.log(Response.data.public_id)
-                    setPublicId5(Response.data.public_id)
-                    console.log(publicId5)
-                }
-            )
             if (isBackImg) {
                 const formDataback = new FormData();
                 formDataback.append("file", background);
@@ -196,22 +175,22 @@ function Temp1() {
                     Reset
                 </button>
 
-                <button className="menu-btn" style={(publicId1 && publicId2 && publicId3 && publicId4 && publicId5) ? {} : { display: "none" }} onClick={() => {
+                <button className="menu-btn" style={(publicId1 && publicId2 && publicId3 && publicId4) ? {} : { display: "none" }} onClick={() => {
                     setCollage(true);
                 }}>
                     Create Collage
                 </button>
-                <button className="menu-btn" style={(publicId1 && publicId2 && publicId3 && publicId4 && publicId5) ? { display: "none" } : {}} onClick={uploadImage}>
+                <button className="menu-btn" style={(publicId1 && publicId2 && publicId3 && publicId4) ? { display: "none" } : {}} onClick={uploadImage}>
                     {isUpload ? "Uploading..." : "Upload Image"}
                 </button>
 
-                <button className={isGreyScale ? "menu-btn-selected" : "menu-btn"} style={(publicId1 && publicId2 && publicId3 && publicId4 && publicId5) ? {} : { display: "none" }} onClick={() => {
+                <button className={isGreyScale ? "menu-btn-selected" : "menu-btn"} style={(publicId1 && publicId2 && publicId3 && publicId4) ? {} : { display: "none" }} onClick={() => {
                     if (isGreyScale)
                         setIsGreyScale(false)
                     else
                         setIsGreyScale(true)
                 }}>Add Greyscale</button>
-                <button className="menu-btn" style={(publicId1 && publicId2 && publicId3 && publicId4 && publicId5) ? {} : { display: "none" }} onClick={onButtonClick}>Download Collage</button>
+                <button className="menu-btn" style={(publicId1 && publicId2 && publicId3 && publicId4) ? {} : { display: "none" }} onClick={onButtonClick}>Download Collage</button>
 
                 <div className="collage-back">
                     <label>Set Background</label>
@@ -278,15 +257,6 @@ function Temp1() {
                         }}
                     />
 
-                    <label htmlFor="file-upload5" className={imageSelected5 ? "custom-file-upload input-selected" : "custom-file-upload input-not-selected"}>
-                        {imageSelected5 ? "Selected" : "Select Image 5"}
-                    </label>
-                    <input type="file" id="file-upload5"
-                        onChange={(event) => {
-                            setImageSelected5(event.target.files[0]);
-                        }}
-                    />
-
                 </div>
 
                 <div id={isGreyScale ? "black-white" : ""} className="right" ref={ref}>
@@ -302,4 +272,4 @@ function Temp1() {
     );
 }
 
-export default Temp1;
+export default Temp4;

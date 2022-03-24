@@ -34,7 +34,6 @@ function Temp2() {
     const [isBackImg, setIsBackImg] = useState(null);
     const [background, setBackground] = useState(null);
     const [bg_publicId, setbg_publicId] = useState(null);
-    const [menu, setMenu] = useState(false);
 
     //to download Collage
     const onButtonClick = useCallback(() => {
@@ -196,7 +195,7 @@ function Temp2() {
                 <div className="collage-back">
                     <label>Set Background</label>
                     <div style={{ width: "10px" }}></div>
-                    <Popup trigger={<button> <div className="back-col" style={{ background: color.hex }}> </div> </button>} position="bottom center">
+                    <Popup trigger={<button> <div className="back-col" style={{ background: color.hex }}> </div> </button>} position="bottom right">
                         <div><ColorPicker width={200} height={100}
                             color={color}
                             onChange={(event) => {

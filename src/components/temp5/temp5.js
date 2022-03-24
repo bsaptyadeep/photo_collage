@@ -1,62 +1,41 @@
-import React, { Component, useCallback, useState, useRef } from "react";
+import React, { useCallback, useState, useRef } from "react";
 import { ColorPicker, useColor } from "react-color-palette";
 import "react-color-palette/lib/css/styles.css";
 import Popup from 'reactjs-popup';
 import 'reactjs-popup/dist/index.css';
-import Axios from 'axios';
 import { ReactPhotoCollage } from "react-photo-collage";
-import { Image } from 'cloudinary-react';
+import Axios from 'axios';
 import { toPng } from 'html-to-image';
-import { v4 as uuidv4 } from 'uuid';
+import useMediaQuery from '@mui/material/useMediaQuery';
+// import promises from 'promise'
 
-function Temp5() {
+
+function Temp2() {
     const ref = useRef(null)
+    const matches = useMediaQuery('(min-width:650px)');
+
 
     const [color, setColor] = useColor("hex", "#121212");
     const [isUpload, setIsUpload] = useState(false);
+    const [collage, setCollage] = useState(false);
+    const [isGreyScale, setIsGreyScale] = useState(false);
+    const [selection, setSelection] = useState(false);
 
-    const [imageSelected, setImageSelected] = useState([
-        { id: uuidv4(), photo: null },
-    ]);
+    const [imageSelected, setImageSelected] = useState([]);
     const [publicId, setPublicId] = useState([]);
 
-    const [imageSelected1, setImageSelected1] = useState(null);
-    const [publicId1, setPublicId1] = useState(null);
+    const [height, setHeight] = useState([]);
+    const [pics, setPics] = useState([]);
+    const [element, setElement] = useState([]);
 
-    const [imageSelected2, setImageSelected2] = useState(null);
-    const [publicId2, setPublicId2] = useState(null);
-
-    const [imageSelected3, setImageSelected3] = useState(null);
-    const [publicId3, setPublicId3] = useState(null);
-
-    const [imageSelected4, setImageSelected4] = useState(null);
-    const [publicId4, setPublicId4] = useState(null);
-
-    const [imageSelected5, setImageSelected5] = useState(null);
-    const [publicId5, setPublicId5] = useState(null);
-
+    const [isBackImg, setIsBackImg] = useState(null);
     const [background, setBackground] = useState(null);
     const [bg_publicId, setbg_publicId] = useState(null);
+    const [rows, setRows] = useState(0);
+    const [col, setCol] = useState(0);
+    const [numSel, setNumSel] = useState(0);
 
-
-    const handleAddColumns = () => {
-        setImageSelected([...imageSelected, { id: uuidv4(), photo: null }]);
-        // setPublicId([...publicId, null]);
-    }
-
-    const handleRemoveColumns = (index) => {
-
-        const values_im = [...imageSelected];
-        values_im.splice(index, 1);
-        setImageSelected(values_im);
-
-        const values_id = [...publicId];
-        values_id.splice(index, 1);
-        setPublicId(values_id);
-
-    }
-
-
+    //to download Collage
     const onButtonClick = useCallback(() => {
         if (ref.current === null) {
             return
@@ -75,237 +54,205 @@ function Temp5() {
     }, [ref])
 
 
-    const setting = {
-        width: "600px",
-        height: ["250px", "170px"],
-        layout: [1, 3],
-        photos: [
-            {
-                source:
-                    `https://res.cloudinary.com/saptya/image/upload/v1647524090/${publicId1}.jpg`
-            },
-            {
-                source:
-                    `https://res.cloudinary.com/saptya/image/upload/v1647524090/${publicId2}.jpg`
-            },
-            {
-                source:
-                    `https://res.cloudinary.com/saptya/image/upload/v1647524090/${publicId3}.jpg`
-            },
-            {
-                source:
-                    `https://res.cloudinary.com/saptya/image/upload/v1647524090/${publicId4}.jpg`
+    const collageProps = () => {
+        console.log("hello")
+        var h = matches ? 400 : 250;
+        h = h / rows;
+        let high = `${h}px`;
+        for (var i = 0; i < rows; i++) {
+            console.log(high)
+            height[i] = high;
+        }
+        var ar = Array(3).fill(rows);
+        console.log("arr", ar);
+
+        for (var i = 0; i < numSel; i++) {
+            var sor = {
+                source: `https://res.cloudinary.com/saptya/image/upload/v1647524090/${publicId[i]}.jpg`
             }
-            //   {
-            //     source:
-            //       "https://images.unsplash.com/photo-1516832970803-325be7a92aa5?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=93d7ac9abad6167aecb49ebd67fd5b6d&auto=format&fit=crop&w=751&q=80"
-            //   },
-            //   {
-            //     source:
-            //       "https://images.unsplash.com/photo-1526938972776-11558ad4de30?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=973795a277e861265b0fabbf4a96afe2&auto=format&fit=crop&w=750&q=80"
-            //   },
-            //   {
-            //     source:
-            //       "https://images.unsplash.com/photo-1464550838636-1a3496df938b?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=f22dbf6c13ea7c21e803aa721437b691&auto=format&fit=crop&w=888&q=80"
-            //   }
-        ],
+            pics[i] = sor;
+        }
+        for (i = 0; i < rows; i++)
+            element.push(parseInt(col));
+        console.log(element)
+        console.log(pics);
+        console.log(height);
+    }
+
+    //collage function
+    const setting = {
+        width: matches ? "600px" : "250px",
+        height: height,
+        layout: element,
+        photos: pics,
         showNumOfRemainingPhotos: true
     };
 
+    //reset function
+    const resetApp = () => {
+        setIsGreyScale(false);
+        setIsUpload(false)
+        setCollage(false)
+        setSelection(false)
+        setImageSelected([])
+        setPublicId([])
+        setHeight([])
+        setPics([])
+        setElement([])
+        setIsBackImg(null)
+        setBackground(null)
+        setbg_publicId(null)
+        setRows(0)
+        setCol(0)
+        setNumSel(0)
+    }
 
-    const uploadImage = (files) => {
-        console.log(files[0]);
-        if (!imageSelected1 || !imageSelected2 || !imageSelected3 || !imageSelected4 || !imageSelected5) {
+    const upImg = async () => {
+        for (let i = 0; i < numSel; i++) {
+            const formData = new FormData();
+            formData.append("file", imageSelected[i]);
+            formData.append("upload_preset", "eet582tc")
+            // console.log("Hel")
+            const response = await Axios.post("https://api.cloudinary.com/v1_1/saptya/image/upload", formData)
+            // const data = await response.json();
+            console.log(response);
+            // let pub = Response.data;
+            publicId[`${i}`] = response.data.public_id;
+            // setPublicId([...publicId, pub])
+            console.log(publicId);
+            // console.log(isUpload);
+        }
+        if (isBackImg) {
+            const formDataback = new FormData();
+            formDataback.append("file", background);
+            formDataback.append("upload_preset", "eet582tc")
+
+            Axios.post("https://api.cloudinary.com/v1_1/saptya/image/upload", formDataback).then(
+                (Response) => {
+                    console.log(Response.data.public_id)
+                    setbg_publicId(Response.data.public_id)
+                    console.log(bg_publicId)
+                }
+            )
+        }
+        setSelection(true);
+        collageProps();
+    }
+
+    //upload function
+    const uploadImage = () => {
+        if (imageSelected.length !== numSel) {
             alert("Upload All Images")
         }
         else {
-            const formData1 = new FormData();
-            formData1.append("file", imageSelected1);
-            formData1.append("upload_preset", "eet582tc")
-
-            Axios.post("https://api.cloudinary.com/v1_1/saptya/image/upload", formData1).then(
-                (Response) => {
-                    console.log(Response.data.public_id)
-                    setPublicId1(Response.data.public_id)
-                    console.log(publicId1)
-                }
-            )
-            const formData2 = new FormData();
-            formData2.append("file", imageSelected2);
-            formData2.append("upload_preset", "eet582tc")
-
-            Axios.post("https://api.cloudinary.com/v1_1/saptya/image/upload", formData2).then(
-                (Response) => {
-                    console.log(Response.data.public_id)
-                    setPublicId2(Response.data.public_id)
-                    console.log(publicId2)
-                }
-            )
-
-            const formData3 = new FormData();
-            formData3.append("file", imageSelected3);
-            formData3.append("upload_preset", "eet582tc")
-
-            Axios.post("https://api.cloudinary.com/v1_1/saptya/image/upload", formData3).then(
-                (Response) => {
-                    console.log(Response.data.public_id)
-                    setPublicId3(Response.data.public_id)
-                    console.log(publicId3)
-                }
-            )
-
-            const formData4 = new FormData();
-            formData4.append("file", imageSelected4);
-            formData4.append("upload_preset", "eet582tc")
-
-            Axios.post("https://api.cloudinary.com/v1_1/saptya/image/upload", formData4).then(
-                (Response) => {
-                    console.log(Response.data.public_id)
-                    setPublicId4(Response.data.public_id)
-                    console.log(publicId4)
-                }
-            )
-
-            const formData5 = new FormData();
-            formData5.append("file", imageSelected5);
-            formData5.append("upload_preset", "eet582tc")
-
-            Axios.post("https://api.cloudinary.com/v1_1/saptya/image/upload", formData5).then(
-                (Response) => {
-                    console.log(Response.data.public_id)
-                    setPublicId5(Response.data.public_id)
-                    console.log(publicId5)
-                }
-            )
-            setIsUpload(true)
+            setIsUpload(true);
+            upImg();
+            console.log(publicId);
         }
-
     };
 
     return (
         <div className="App">
+            <div className="top">
 
-            <div className="left">
+                <button className="menu-btn" onClick={resetApp}>
+                    Reset
+                </button>
 
-                <button className="collage-btn" onClick={uploadImage}>
+                <button className="menu-btn" style={selection ? {} : { display: "none" }} onClick={() => {
+                    setCollage(true);
+                }}>
                     Create Collage
                 </button>
+                <button className="menu-btn" style={selection ? { display: "none" } : {}} onClick={() => {
+                    uploadImage();
+                }}>
+                    {isUpload ? "Uploading..." : "Upload Image"}
+                </button>
+
+                <button className={isGreyScale ? "menu-btn-selected" : "menu-btn"} style={selection ? {} : { display: "none" }} onClick={() => {
+                    if (isGreyScale)
+                        setIsGreyScale(false)
+                    else
+                        setIsGreyScale(true)
+                }}>Add Greyscale</button>
+                <button className="menu-btn" style={selection ? {} : { display: "none" }} onClick={onButtonClick}>Download Collage</button>
 
                 <div className="collage-back">
                     <label>Set Background</label>
-                    <Popup trigger={<button> <div className="back-col" style={{ background: color.hex }}> </div> </button>} position="bottom center">
+                    <div style={{ width: "10px" }}></div>
+                    <Popup trigger={<button> <div className="back-col" style={{ background: color.hex }}> </div> </button>} position="bottom right">
                         <div><ColorPicker width={200} height={100}
                             color={color}
                             onChange={(event) => {
-                                console.log(color)
+                                // console.log(color)
                                 setColor(event)
-                                // console.log(color);
                             }} hideHSV dark />
+
+                            <label htmlFor="file-uploadback" className={background ? "custom-file-upload input-selected pop-btn" : "custom-file-upload input-not-selected pop-btn"}>
+                                {background ? "Selected" : "Select Image"}
+                            </label>
+                            <input type="file" id="file-uploadback"
+                                onChange={(event) => {
+                                    setBackground(event.target.files[0]);
+                                    setIsBackImg(true);
+                                }}
+                            />
                         </div>
                     </Popup>
                 </div>
-
-
-                <form >
-                    {imageSelected.map(imageSelected => (
-                        <div key={imageSelected.id}>
-                            <div className="left-comp">
-                                <label htmlFor="file-upload1" className={imageSelected.photo ? "custom-file-upload input-selected" : "custom-file-upload input-not-selected"}>
-                                    {imageSelected.photo ? "Uploaded" : "Upload Image 1"}
-                                </label>
-                                <input type="file" id="file-upload1"
-                                    onChange={(event) => {
-                                        setImageSelected1(event.target.files[0]);
-                                    }}
-                                />
-                            </div>
-                            <button disabled={imageSelected.length === 1} onClick={() => handleRemoveColumns(imageSelected.id)}>
-                                Remove
-                            </button>
-                            <button
-                                onClick={handleAddColumns}
-                            >
-                                Add
-                            </button>
-                        </div>
-                    ))}
-                    <button
-                    >Send</button>
-                </form>
-
-                {/* <div className="left-comp">
-                    <label htmlFor="file-upload1" className={imageSelected1 ? "custom-file-upload input-selected" : "custom-file-upload input-not-selected"}>
-                        {imageSelected1 ? "Uploaded" : "Upload Image 1"}
-                    </label>
-                    <input type="file" id="file-upload1"
-                        onChange={(event) => {
-                            setImageSelected1(event.target.files[0]);
-                        }}
-                    />
-                </div>
-
-                <div className="left-comp">
-                    <label htmlFor="file-upload2" className={imageSelected2 ? "custom-file-upload input-selected" : "custom-file-upload input-not-selected"}>
-                        {imageSelected2 ? "Uploaded" : "Upload Image 2"}
-                    </label>
-                    <input type="file" id="file-upload2"
-                        onChange={(event) => {
-                            setImageSelected2(event.target.files[0]);
-                        }}
-                    />
-                </div>
-
-                <div className="left-comp">
-                    <label htmlFor="file-upload3" className={imageSelected3 ? "custom-file-upload input-selected" : "custom-file-upload input-not-selected"}>
-                        {imageSelected3 ? "Uploaded" : "Upload Image 3"}
-                    </label>
-                    <input type="file" id="file-upload3"
-                        onChange={(event) => {
-                            setImageSelected3(event.target.files[0]);
-                        }}
-                    />
-                </div>
-
-                <div className="left-comp">
-                    <label htmlFor="file-upload4" className={imageSelected4 ? "custom-file-upload input-selected" : "custom-file-upload input-not-selected"}>
-                        {imageSelected4 ? "Uploaded" : "Upload Image 4"}
-                    </label>
-                    <input type="file" id="file-upload4"
-                        onChange={(event) => {
-                            setImageSelected4(event.target.files[0]);
-                        }}
-                    />
-                </div>
-
-                <div className="left-comp">
-                    <label htmlFor="file-upload5" className={imageSelected5 ? "custom-file-upload input-selected" : "custom-file-upload input-not-selected"}>
-                        {imageSelected5 ? "Uploaded" : "Upload Image 5"}
-                    </label>
-                    <input type="file" id="file-upload5"
-                        onChange={(event) => {
-                            setImageSelected5(event.target.files[0]);
-                        }}
-                    />
-                </div> */}
-
-                {/* <div>
-          <p>{publicId1}</p>
-          {publicId1 != null ? <Image cloudName="eet582tc" publicId={`https://res.cloudinary.com/saptya/image/upload/v1647524090/${publicId1}.jpg`} /> : <p></p>}
-        </div> */}
             </div>
 
+            <div className="workplace">
+                <div className="left">
+                    <label>Columns</label>
+                    <input name="col" type="number" placholder="Columns" onChange={(event) => {
+                        setCol(event.target.value)
+                    }} />
+                    <label>Rows</label>
+                    <input name="row" type="number" placholder="Rows" onChange={(event) => {
+                        setRows(event.target.value)
+                    }} />
+                    <button onClick={() => {
+                        setNumSel(rows * col);
+                        for (var i = 0; i < numSel; i++) {
+                            imageSelected.push(null)
+                            publicId.push(null)
+                        }
+                        // console.log(imageSelected)
+                    }} style={{width:"134px", margin:"5px"}} className="custom-file-upload input-not-selected">Next</button>
+                    <div>
+                        <tbody>
+                            {[...Array(numSel)].map((x, i) =>
+                                <div>
+                                    <label htmlFor={`file-upload${i}`} className={imageSelected[i] ? "custom-file-upload input-selected" : "custom-file-upload input-not-selected"}>
+                                        {imageSelected[i] ? "Selected" : `Image ${i+1}`}
+                                    </label>
+                                    <input type="file" id={`file-upload${i}`}
+                                        onChange={(event) => {
+                                            let data = event.target.files[0];
+                                            setImageSelected([...imageSelected, data]);
+                                            setPublicId([...publicId, null]);
+                                            console.log(publicId);
+                                        }}
+                                    />
+                                </div>
+                            )}
+                        </tbody>
+                    </div>
+                </div>
 
-
-            <div className="right">
-                <button className="collage-btn download-btn" onClick={onButtonClick}>Download Collage</button>
-                {isUpload ?
-                    <ReactPhotoCollage {...setting} /> :
-                    <div className="empty-collage"></div>
-                }
-
+                <div id={isGreyScale ? "black-white" : ""} className="right" ref={ref}>
+                    {collage ?
+                        <div className="collage" style={isBackImg ? { backgroundImage: `url(https://res.cloudinary.com/saptya/image/upload/v1647524090/${bg_publicId}.jpg)`, backgroundRepeat: "no-repeat" } : { background: color.hex }}>
+                            <ReactPhotoCollage {...setting} />
+                        </div> :
+                        <div className="empty-collage"></div>
+                    }
+                </div>
             </div>
         </div>
     );
 }
 
-export default Temp5;
+export default Temp2;

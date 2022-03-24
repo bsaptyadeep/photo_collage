@@ -28,3 +28,14 @@
 .button img {
     height: 150px;
 }
+
+@media only screen and (max-width: 1200px){
+    .main{
+        flex-direction: column;
+        position: relative;
+    bottom: auto;
+    right: auto;
+    left: auto;
+    top: auto;
+    }
+}

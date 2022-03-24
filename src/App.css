@@ -8,11 +8,10 @@
     width: 100%;
     display: flex;
     flex-direction: column;
-    position: fixed;
-    bottom: 0;
-    right: 0;
-    left: 0;
-    top: 0;
+    /* position: fixed; */
+
+
+
 }
 
 /* <----------TOP-----------> */
@@ -115,7 +114,15 @@
       font-size: 12px;
       cursor: pointer;
     }
-    
+    .left label{
+      color: #ffffff;
+      font-size: 12px;
+      font-weight: 600;
+      margin: 5px;
+    }
+    .left input{
+      width: 134px;
+    }
     .back-col{
       height: 12px;
       width: 12px;
@@ -130,7 +137,7 @@
     }
     
     .empty-collage{
-      margin: 50px;
+      margin: 60px;
       width: 640px;
       background-color: #ffffff;
       height: 460px;
@@ -154,11 +161,11 @@
 
 @media only screen and (max-width: 800px){
   .App{
-    position: absolute;
-    bottom: 0;
-    right: 0;
-    left: 0;
-    top: 0;
+    position: relative;
+    bottom: auto;
+    right: auto;
+    left: auto;
+    top: auto;
   }
   .top{
     display: flex;
