@@ -1,6 +1,5 @@
 {
   "name": "app",
-  "homepage": "https://bsaptyadeep.github.io/photo_collage",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
